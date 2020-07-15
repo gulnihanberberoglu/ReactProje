@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 import './App.css';
 import { LoadingState } from './types/loading';
-import { openLoading, closeLoading } from './actions/loading';
+import { openLoadingAction, closeLoadingAction } from './shared/store/actions/loading.actions';
 
 const DashboardPage = React.lazy(() => import('./pages/dashboard/index'));
 
@@ -31,8 +31,8 @@ const mapState = (state: LoadingState) => ({
 })
 
 const mapDispatch = {
-  openLoading,
-  closeLoading
+  openLoadingAction,
+  closeLoadingAction
 }
 
 export default connect(mapState, mapDispatch)(App);
