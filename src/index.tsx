@@ -3,12 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import * as serviceWorker from './serviceWorker';
-import { loadingReducer } from './reducers/loading';
-
-// @ts-ignore
-const store = createStore(loadingReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+import * as serviceWorker from './serviceWorker'
+import {store} from "./shared/store";
 
 ReactDOM.render(
   <React.StrictMode>

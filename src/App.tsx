@@ -1,17 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 import './App.css';
 import { LoadingState } from './types/loading';
 import { openLoading, closeLoading } from './actions/loading';
 
-function App(props: any) {
-  return (
-    <div className="App">
-      <p>{"LoadingStatus: " + props.isLoading}</p>
-      <button onClick={props.openLoading} >Open Loading</button>
-      <button onClick={props.closeLoading}>Close Loading</button>
-    </div>
-  );
+const DashboardPage = React.lazy(() => import('./pages/dashboard/index'));
+
+class App extends React.Component {
+    render(): React.ReactNode {
+        return (
+            <>
+                <Router>
+                    <React.Suspense fallback={'loading...'}>
+                        <Switch>
+                            <Route exact path="/" render={() => (
+                                <Redirect to="/dashboard"/>
+                            )}/>
+                            <Route path='/dashboard' component={DashboardPage} />
+                        </Switch>
+                    </React.Suspense>
+                </Router>
+            </>
+        );
+    }
 }
 
 const mapState = (state: LoadingState) => ({
