@@ -1,10 +1,10 @@
 import {CLOSE_LOADING, OPEN_LOADING} from "../constants/loading.constants";
 
-interface OpenLoadingActionInterface {
+export interface OpenLoadingActionInterface {
   type: typeof OPEN_LOADING
 }
 
-interface CloseLoadingActionInterface {
+export interface CloseLoadingActionInterface {
   type: typeof CLOSE_LOADING
 }
 

@@ -1,49 +1,69 @@
 import React from 'react';
-import {connect, ConnectedComponent, MapStateToProps} from "react-redux";
-import { compose, Dispatch, bindActionCreators } from 'redux';
-import {isOpenSelector} from "../../shared/store/selectors/loading.selectors";
-import { createStructuredSelector } from 'reselect';
-import {IAppState} from "../../shared/store";
-import {closeLoadingAction, openLoadingAction} from '../../shared/store/actions/loading.actions';
+import Grid from '@material-ui/core/Grid';
+import { connect } from "react-redux";
+import { Header } from '../../components/header';
+import LocationTextField, { LocationResult } from '../../components/locationTextField';
+import Weather, { City } from '../../components/weather';
+import styled from 'styled-components';
 
-interface IStateToProps {
-    isOpen: boolean,
-}
+import axios from 'axios';
+import { Dispatch } from 'redux';
+import { fetchWeatherRequestedAction } from '../../shared/store/actions/weather.actions';
+import { isOpenSelector } from '../../shared/store/selectors/loading.selectors';
+import Loading from '../../components/loading';
+import { citySelector } from '../../shared/store/selectors/weather.selectors';
+const GridApp = styled.div`
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    text-align: end;
+    padding: 30px;
+`;
+const DashboardPage: React.FC<{ isLoading: boolean, city: City, fetchWeather: (lat: number, lng: number) => void }> = ({ isLoading, city, fetchWeather, ...props }): JSX.Element => {
+    
+    async function handleLocaitonTextFieldChange(locationResult?: LocationResult) {
+        if (locationResult) {
+            fetchWeather(locationResult.lat, locationResult.lng);
+        }
 
-interface IDispatchToProps {
-    openLoading: any,
-    closeLoading: any,
-}
-
-const DashboardComponent: React.FC<IStateToProps & IDispatchToProps> = ({isOpen, openLoading, closeLoading}: IStateToProps & IDispatchToProps): JSX.Element => {
+    }
     return (
-        <div className="App">
-            <p>{"LoadingStatus: " + isOpen}</p>
-            <button onClick={openLoading} >Open Loading</button>
-            <button onClick={closeLoading}>Close Loading</button>
-        </div>
+        <Grid container>
+            <GridApp>
+                <Grid item xs={12}>
+                    <Header>
+                        Hava Durumu Raporu
+                    </Header>
+                </Grid>
+                <Grid item xs={12}>
+                    <LocationTextField onChange={handleLocaitonTextFieldChange} />
+                </Grid>
+            </GridApp>
+            <Grid item xs={12}>
+                {
+                    isLoading ? <Loading /> : <Weather city={city} />
+                }
+            </Grid>
+
+
+        </Grid>
     );
 };
 
-
-const mapStateToProps: MapStateToProps<IStateToProps, IStateToProps, IAppState> = (): any => {
-    return createStructuredSelector({
-        isOpen: isOpenSelector,
-    })
+const mapStateToProps = (state: any) => {
+    return {
+        isLoading: isOpenSelector(state),
+        city: citySelector(state)
+    }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchToProps => {
-    return bindActionCreators({
-        openLoading: openLoadingAction,
-        closeLoading: closeLoadingAction,
-    }, dispatch);
-}
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        fetchWeather: (lat: number, lng: number) => {
+            dispatch(fetchWeatherRequestedAction(lat, lng))
+        }
+    };
+};
 
-const DashboardPage: ConnectedComponent<React.FC<IStateToProps & IDispatchToProps>, any> = compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )
-)(DashboardComponent);
-
-export default DashboardPage;
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);

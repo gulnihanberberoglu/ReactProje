@@ -1,6 +1,8 @@
 import { LoadingActionTypes } from "../types/loading.types";
 import { OPEN_LOADING, CLOSE_LOADING } from "../constants/loading.constants";
 
+//store'a gelen loading action sonucunda uygulamanın nasıl değişeceği belirlendi
+
 export type LoadingState = {
     isOpen: boolean
 }

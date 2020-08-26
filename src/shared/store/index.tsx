@@ -1,11 +1,15 @@
-import {combineReducers, createStore, applyMiddleware} from "redux";
-import {loadingReducer} from "./reducers/loading.reducer";
-import {composeWithDevTools} from "redux-devtools-extension";
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import { loadingReducer } from "./reducers/loading.reducer";
+import { weatherReducer } from "./reducers/weather.reducer";
+import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from "./saga";
 
+//Bütün state verilerinin tutulduğu  yer
+
 const reducers = combineReducers({
-    loading: loadingReducer
+    loading: loadingReducer,
+    weather: weatherReducer
 })
 
 export type IAppState = ReturnType<typeof reducers>

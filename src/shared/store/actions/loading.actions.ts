@@ -1,6 +1,8 @@
 import { LoadingActionTypes } from '../types/loading.types'
 import {CLOSE_LOADING, OPEN_LOADING} from "../constants/loading.constants";
 
+//store'a iletilen loading değişken bilgileri
+
 export function openLoadingAction(): LoadingActionTypes {
   return {
     type: OPEN_LOADING
