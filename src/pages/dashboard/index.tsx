@@ -4,14 +4,15 @@ import { connect } from "react-redux";
 import { Header } from '../../components/header';
 import LocationTextField, { LocationResult } from '../../components/locationTextField';
 import Weather, { City } from '../../components/weather';
+import FormButton from '../../components/formButton';
 import styled from 'styled-components';
-
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { fetchWeatherRequestedAction } from '../../shared/store/actions/weather.actions';
 import { isOpenSelector } from '../../shared/store/selectors/loading.selectors';
 import Loading from '../../components/loading';
 import { citySelector } from '../../shared/store/selectors/weather.selectors';
+import { RouteComponentProps } from 'react-router-dom';
 const GridApp = styled.div`
     width: 100%;
     display: flex;
@@ -20,16 +21,25 @@ const GridApp = styled.div`
     text-align: end;
     padding: 30px;
 `;
-const DashboardPage: React.FC<{ isLoading: boolean, city: City, fetchWeather: (lat: number, lng: number) => void }> = ({ isLoading, city, fetchWeather, ...props }): JSX.Element => {
-    
-    async function handleLocaitonTextFieldChange(locationResult?: LocationResult) {
+
+type DashboardPageProp = RouteComponentProps & {
+    isLoading: boolean,
+    city: City,
+    fetchWeather: (lat: number, lng: number) => void
+}
+
+const DashboardPage: React.FC<DashboardPageProp> = ({ isLoading, city, fetchWeather, ...props }): JSX.Element => {
+
+    function handleLocaitonTextFieldChange(locationResult?: LocationResult) {
         if (locationResult) {
             fetchWeather(locationResult.lat, locationResult.lng);
         }
 
     }
     return (
+
         <Grid container>
+            <FormButton onClick={() => { props.history.push("/register") }}>Kayıt Ol</FormButton>
             <GridApp>
                 <Grid item xs={12}>
                     <Header>

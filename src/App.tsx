@@ -1,9 +1,11 @@
 import React from 'react';
-import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import styled from 'styled-components';
 
 const DashboardPage = React.lazy(() => import('./pages/dashboard/index'));
+const RegisterPage = React.lazy(() => import('./pages/register/index'));
+
 const AppDiv = styled.div`
     position: fixed;
     background-size: 100%;
@@ -20,9 +22,10 @@ class App extends React.Component {
                     <React.Suspense fallback={'loading...'}>
                         <Switch>
                             <Route exact path="/" render={() => (
-                                <Redirect to="/dashboard"/>
-                            )}/>
+                                <Redirect to="/dashboard" />
+                            )} />
                             <Route path='/dashboard' component={DashboardPage} />
+                            <Route path='/register' component={RegisterPage} />
                         </Switch>
                     </React.Suspense>
                 </Router>
