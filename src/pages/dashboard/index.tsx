@@ -6,7 +6,6 @@ import LocationTextField, { LocationResult } from '../../components/locationText
 import Weather, { City } from '../../components/weather';
 import FormButton from '../../components/formButton';
 import styled from 'styled-components';
-import axios from 'axios';
 import { Dispatch } from 'redux';
 import { fetchWeatherRequestedAction } from '../../shared/store/actions/weather.actions';
 import { isOpenSelector } from '../../shared/store/selectors/loading.selectors';
