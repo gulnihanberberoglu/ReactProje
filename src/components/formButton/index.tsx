@@ -1,5 +1,6 @@
-import styled from 'styled-components';
-let FormButton = styled.div`
+import styled, {StyledComponentBase} from 'styled-components';
+
+let FormButton: StyledComponentBase<'div', any> = styled.div`
     display: inline-block;
     border-radius: 4px;
     background-color: #d47e5e;

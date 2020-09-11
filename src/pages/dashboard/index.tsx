@@ -1,42 +1,55 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import { connect } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Header } from '../../components/header';
-import LocationTextField, { LocationResult } from '../../components/locationTextField';
+import LocationTextField from '../../components/locationTextField';
 import Weather, { City } from '../../components/weather';
 import FormButton from '../../components/formButton';
-import styled from 'styled-components';
 import { Dispatch } from 'redux';
 import { fetchWeatherRequestedAction } from '../../shared/store/actions/weather.actions';
 import { isOpenSelector } from '../../shared/store/selectors/loading.selectors';
 import Loading from '../../components/loading';
 import { citySelector } from '../../shared/store/selectors/weather.selectors';
 import { RouteComponentProps } from 'react-router-dom';
-const GridApp = styled.div`
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    box-sizing: border-box;
-    text-align: end;
-    padding: 30px;
-`;
+import { GridApp } from './styled';
+import { WeatherRequest } from '../../shared/store/types/weather.types';
 
-type DashboardPageProp = RouteComponentProps & {
-    isLoading: boolean,
-    city: City,
-    fetchWeather: (lat: number, lng: number) => void
-}
+type DashboardPageProp = RouteComponentProps
 
-const DashboardPage: React.FC<DashboardPageProp> = ({ isLoading, city, fetchWeather, ...props }): JSX.Element => {
+const DashboardPage: React.FC<DashboardPageProp> = ({ ...props }: DashboardPageProp): JSX.Element => {
+    /**
+     * Redux Dispatch
+     * */
+    const dispatch: Dispatch = useDispatch();
 
-    function handleLocaitonTextFieldChange(locationResult?: LocationResult) {
+    /**
+     * Selector for isOpen from loading state
+     *
+     * @type {boolean}
+     * */
+    const isLoading: boolean = useSelector(isOpenSelector);
+
+    /**
+     * Selector for city from weather state
+     *
+     * @type {City}
+     * */
+    const city: City = useSelector(citySelector);
+
+    /**
+     * Function for location change
+     *
+     * @param {LocationResult} locationResult
+     * @type {Function}
+     * @return {void}
+     * */
+    const locationChange: any = (locationResult?: WeatherRequest): void => {
         if (locationResult) {
-            fetchWeather(locationResult.lat, locationResult.lng);
+            dispatch(fetchWeatherRequestedAction(locationResult));
         }
-
     }
-    return (
 
+    return (
         <Grid container>
             <FormButton onClick={() => { props.history.push("/register") }}>Kayıt Ol</FormButton>
             <GridApp>
@@ -46,7 +59,7 @@ const DashboardPage: React.FC<DashboardPageProp> = ({ isLoading, city, fetchWeat
                     </Header>
                 </Grid>
                 <Grid item xs={12}>
-                    <LocationTextField onChange={handleLocaitonTextFieldChange} />
+                    <LocationTextField onChange={locationChange} />
                 </Grid>
             </GridApp>
             <Grid item xs={12}>
@@ -54,25 +67,8 @@ const DashboardPage: React.FC<DashboardPageProp> = ({ isLoading, city, fetchWeat
                     isLoading ? <Loading /> : <Weather city={city} />
                 }
             </Grid>
-
-
         </Grid>
     );
 };
 
-const mapStateToProps = (state: any) => {
-    return {
-        isLoading: isOpenSelector(state),
-        city: citySelector(state)
-    }
-}
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-    return {
-        fetchWeather: (lat: number, lng: number) => {
-            dispatch(fetchWeatherRequestedAction(lat, lng))
-        }
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);
+export default DashboardPage;

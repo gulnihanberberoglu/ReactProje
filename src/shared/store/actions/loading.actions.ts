@@ -3,14 +3,10 @@ import {CLOSE_LOADING, OPEN_LOADING} from "../constants/loading.constants";
 
 //store'a iletilen loading değişken bilgileri
 
-export function openLoadingAction(): LoadingActionTypes {
-  return {
-    type: OPEN_LOADING
-  }
-}
+export const openLoadingAction = (): LoadingActionTypes => ({
+  type: OPEN_LOADING
+})
 
-export function closeLoadingAction(): LoadingActionTypes {
-  return {
-    type: CLOSE_LOADING
-  }
-}
+export const closeLoadingAction = (): LoadingActionTypes => ({
+  type: CLOSE_LOADING
+})

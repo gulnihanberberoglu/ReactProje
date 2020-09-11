@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import styled, {StyledComponentBase} from 'styled-components';
 
-export let Header = styled.h3`
+export let Header: StyledComponentBase<'h3', any> = styled.h3`
     margin: 5px;
     color: antiquewhite;
 `;
 
-export let SubHeader = styled.h6`
+export let SubHeader: StyledComponentBase<'h6', any> = styled.h6`
     margin: 5px;
     text-align: end;
 `;

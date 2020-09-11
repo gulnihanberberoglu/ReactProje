@@ -1,34 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import Grid from '@material-ui/core/Grid';
-
-const WeatherCardContainer = styled(
-    ({ className, children, ...props }) => (<Grid className={className} item xs={2} {...props}>{children}</Grid>)
-)`
-    border: 1px solid darkcyan;
-    padding: 10px;
-    height: 300px;
-    overflow: hidden;
-`;
-
-const WeatherDateField = styled.div`
-    padding-bottom: 10px;
-    color: #lightcoral;
-    font-weight: bold;
-    font-size: 13px;
-    color:#E7512F;
-`;
-
-const WeatherIconField = styled.div`
-    height: 130px;
-`;
-
-const WeatherIconSpanField = styled.div`
-    display: block;
-    height: 120px;
-    border: 1px solid darkcyan;
-`;
-
+import {WeatherCardContainer, WeatherDateField, WeatherIconField, WeatherIconSpanField} from "./styled";
 
 export type Weather = {
     date: string,
@@ -42,9 +13,9 @@ export type WeatherCardProps = {
     weather: Weather
 }
 
-const WeatherCard: React.FC<WeatherCardProps> = ({ weather, ...props }): JSX.Element => {
+const WeatherCard: React.FC<WeatherCardProps> = ({ weather }: WeatherCardProps): JSX.Element => {
 
-    function getWeatherIcon() {
+    const getWeatherIcon: any = (): JSX.Element => {
         const timeHour = parseInt(weather.date.split(' ')[1].split(':')[0]);
         let icon = ''
         if (weather.description.includes('clear sky') && (timeHour >= 6 && timeHour <= 18)) {
