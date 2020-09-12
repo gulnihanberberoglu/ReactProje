@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled, {StyledComponentBase} from 'styled-components';
 
-const Loading = styled.div`
+const Loading: StyledComponentBase<'div', any> = styled.div`
     border: 6px solid #bbb;
     border-radius: 50%;
     border-top: 6px solid #E7512F;

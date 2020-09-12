@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-const TextField = styled.input`
+import styled, {StyledComponentBase} from 'styled-components';
+const TextField: StyledComponentBase<'input', any> = styled.input`
     font-size: 1.5em;
     color: darkcyan;
     border-radius: 15px;

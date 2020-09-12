@@ -1,39 +1,24 @@
 import { all } from 'redux-saga/effects';
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
-import { FetchWeatherRequestedInterface, City, WeatherActionTypes } from '../types/weather.types';
-import { LoadingActionTypes } from '../types/loading.types';
+import { call, put, takeLatest } from 'redux-saga/effects'
+import { FetchWeatherRequestedInterface, City } from '../types/weather.types';
 import * as Api from "../services/weather.api";
+import {WEATHER_FETCH_REQUESTED} from "../constants/weather.constants";
+import {openLoadingAction, closeLoadingAction} from "../actions/loading.actions";
+import {fetchWeatherFailAction, fetchWeatherSuccessAction} from "../actions/weather.actions";
 
 function* fetchWeather(action: FetchWeatherRequestedInterface) {
-    let weather: WeatherActionTypes;
-    let loading: LoadingActionTypes = {
-        type: "OPEN_LOADING"
-    };
-    yield put(loading);
-
+    yield put(openLoadingAction());
     try {
         const result: City = yield call(Api.fetchWeather, action.payload);
-        weather = {
-            type: "WEATHER_FETCH_SUCCEEDED",
-            payload: result
-        }
-        yield put(weather);
+        yield put(fetchWeatherSuccessAction(result));
     } catch (e) {
-        weather = {
-            type: "WEATHER_FETCH_FAILED",
-            payload: e
-        }
-        yield put(weather);
+        yield put(fetchWeatherFailAction(e));
     } finally {
-        loading = {
-            type: "CLOSE_LOADING"
-        }
-        yield put(loading);
+        yield put(closeLoadingAction());
     }
 }
 
 export default function* rootSaga() {
-    yield takeLatest("WEATHER_FETCH_REQUESTED", fetchWeather);
+    yield takeLatest(WEATHER_FETCH_REQUESTED, fetchWeather);
     yield all([]);
-    // code after all-effect
 }

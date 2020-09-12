@@ -1,25 +1,21 @@
 import React from 'react';
 import TextField from '../textField';
-
-export type LocationResult = {
-    lat: number,
-    lng: number,
-}
+import {WeatherRequest} from "../../shared/store/types/weather.types";
 
 export type LocationTextFieldProps = {
-    onChange?: (result?: LocationResult) => void;
+    onChange?: (result?: WeatherRequest) => void;
 }
 
-const LocationTextField: React.FC<LocationTextFieldProps> = ({ onChange, ...props }): JSX.Element => {
+const LocationTextField: React.FC<LocationTextFieldProps> = ({ onChange }: LocationTextFieldProps): JSX.Element => {
     let places: google.maps.places.Autocomplete;
     const textFieldRef = React.useRef<any>();
 
     React.useEffect(() => {
         places = new google.maps.places.Autocomplete(textFieldRef.current);
         google.maps.event.addListener(places, 'place_changed', placeChangedCallback);
-    }, []);
+    }, [textFieldRef.current]);
 
-    function placeChangedCallback() {
+    const placeChangedCallback: any = (): void => {
         let place = places.getPlace();
         if (onChange) {
             if (place.geometry) {
